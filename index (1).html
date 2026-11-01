@@ -1,0 +1,128 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#728156"><title>Hisab Kitab</title>
+<link rel="manifest" href="manifest.webmanifest"><link rel="icon" type="image/png" href="favicon.png"><link rel="apple-touch-icon" href="apple-touch-icon.png">
+<style>
+@font-face{font-family:Trapvoid;src:url(/fonts/Trapvoid-Regular.woff2) format("woff2"),url(/fonts/Trapvoid-Regular.ttf) format("truetype");font-weight:400;font-display:swap}
+:root{--s50:#E7F5DC;--s100:#CFE1B9;--s200:#B6C99B;--s300:#98A77C;--s400:#88976C;--s500:#728156;--bg:#E7F5DC;--card:#CFE1B9;--tx:#1F2A14;--mut:#5a6845;--track:#E7F5DC;--inp:#E7F5DC;--red:#B5543C;--amb:#C9923A;--sh:0 6px 18px rgba(31,42,20,.12)}
+:root[data-t=dark]{--bg:#1A2112;--card:#232D18;--tx:#E7F5DC;--mut:#98A77C;--track:#2f3b21;--inp:#1A2112;--sh:0 6px 18px rgba(0,0,0,.35)}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;font-family:"Trapvoid",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--tx);font-weight:400}
+button,input,select,textarea{font:inherit;color:inherit}
+body{padding-bottom:calc(96px + env(safe-area-inset-bottom))}
+header{position:sticky;top:0;z-index:5;display:flex;align-items:center;gap:12px;padding:calc(10px + env(safe-area-inset-top)) 16px 10px;background:var(--bg)}
+header h1{font-size:22px;margin:0;color:var(--s500)}:root[data-t=dark] header h1{color:var(--s200)}
+.ib{width:48px;height:48px;border:0;border-radius:50%;background:var(--card);font-size:22px;box-shadow:var(--sh);cursor:pointer}
+main{padding:4px 16px;max-width:640px;margin:auto;animation:in .25s ease}
+@keyframes in{from{opacity:0;transform:translateY(8px)}}
+.card{background:var(--card);border-radius:24px;padding:18px;margin:0 0 14px;box-shadow:var(--sh)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.grid .card{margin:0}
+.cap{font-size:13px;color:var(--mut)}.big{font-size:30px;margin:4px 0}.mid{font-size:22px;margin:4px 0}
+.red{color:var(--red)}.grn{color:var(--s500)}:root[data-t=dark] .grn{color:var(--s200)}
+.row{display:flex;align-items:center;gap:12px;padding:10px 0}.row+.row{border-top:1px solid color-mix(in srgb,var(--s300) 35%,transparent)}
+.dot{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;font-size:20px;flex:none}
+.grow{flex:1;min-width:0}.grow div:first-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.btn{border:0;border-radius:999px;padding:14px 22px;min-height:48px;background:var(--s500);color:#fff;cursor:pointer}
+.btn.sec{background:var(--s400)}.btn.ghost{background:var(--inp);color:var(--tx)}.btn.dng{background:var(--red)}
+.sm{min-height:36px;padding:6px 14px;font-size:14px}
+input,select,textarea{width:100%;background:var(--inp);border:0;border-radius:16px;padding:14px;min-height:48px;margin:4px 0 12px}
+label{font-size:13px;color:var(--mut)}
+.chips{display:flex;gap:8px;overflow-x:auto;padding:2px 0 12px}.chip{flex:none;border:0;border-radius:999px;padding:10px 16px;background:var(--s200);color:#1F2A14;cursor:pointer}.chip.on{background:var(--s500);color:#fff}
+.day{display:flex;justify-content:space-between;margin:16px 4px 6px}
+#fab{position:fixed;right:20px;bottom:calc(20px + env(safe-area-inset-bottom));width:62px;height:62px;border:0;border-radius:50%;background:var(--s500);color:#fff;font-size:34px;box-shadow:var(--sh);cursor:pointer;z-index:6;transition:transform .15s}#fab:active{transform:scale(.9)}
+#scrim{position:fixed;inset:0;background:rgba(0,0,0,.4);opacity:0;pointer-events:none;transition:.25s;z-index:8}
+#drawer{position:fixed;top:0;bottom:0;left:0;width:78%;max-width:300px;background:var(--bg);z-index:9;transform:translateX(-105%);transition:transform .28s;padding:calc(20px + env(safe-area-inset-top)) 14px;box-shadow:var(--sh)}
+body.open #drawer{transform:none}body.open #scrim{opacity:1;pointer-events:auto}
+#drawer h2{margin:0 8px 16px;color:var(--s500)}
+#drawer a{display:block;padding:15px 18px;border-radius:999px;margin-bottom:6px;cursor:pointer}#drawer a.on{background:var(--s500);color:#fff}
+#sheet{position:fixed;inset:0;z-index:10;background:rgba(0,0,0,.45);display:none;align-items:flex-end}
+#sheet.show{display:flex}#sheet>div{background:var(--bg);width:100%;max-width:640px;margin:auto;border-radius:28px 28px 0 0;padding:20px 20px calc(20px + env(safe-area-inset-bottom));max-height:92vh;overflow:auto;animation:up .25s}
+@keyframes up{from{transform:translateY(40px);opacity:0}}
+.donut{position:relative;width:200px;margin:auto}.donut svg{transform:rotate(-90deg);display:block}
+.mid-t{position:absolute;inset:0;display:grid;place-content:center;text-align:center}
+.leg{display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:12px;font-size:13px;justify-content:center}.leg i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:5px}
+.soon{text-align:center;padding:40px 10px}
+</style></head><body>
+<div id="scrim" onclick="nav()"></div>
+<aside id="drawer"><h2>Hisab Kitab</h2><div id="links"></div></aside>
+<header><button class="ib" aria-label="Menu" onclick="document.body.classList.add('open')">☰</button><h1 id="ttl"></h1></header>
+<main id="app"></main><button id="fab" aria-label="Add" onclick="openForm()">+</button>
+<div id="sheet" onclick="if(event.target===this)closeSheet()"><div id="sbody"></div></div>
+<script>
+// ---------- Data layer (swap this object to change storage) ----------
+const Store={k:'hisabkitab.v1',load(){try{return JSON.parse(localStorage.getItem(this.k))}catch(e){return null}},save(d){localStorage.setItem(this.k,JSON.stringify(d))},clear(){localStorage.removeItem(this.k)}};
+// ---------- Helpers ----------
+const $=s=>document.querySelector(s),pad=n=>String(n).padStart(2,'0');
+const iso=d=>`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
+const today=()=>iso(new Date()),ago=n=>{const d=new Date();d.setDate(d.getDate()-n);return iso(d)};
+const inr=n=>'₹'+Math.round(n).toLocaleString('en-IN'),uid=()=>Math.random().toString(36).slice(2,10);
+const esc=s=>String(s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const SAGE=['#728156','#98A77C','#B6C99B','#88976C','#CFE1B9','#E7F5DC'];
+const BASE=[['Food','🍲'],['Travel','🚌'],['Shopping','🛍️'],['Bills','🧾'],['Health','💊'],['Entertainment','🎬'],['Other','✨']].map(([n,i],x)=>({n,i,c:SAGE[x%5]}));
+function seed(){const e=(a,c,d,n)=>({id:uid(),amount:a,cat:c,date:ago(d),note:n});
+return{v:1,sample:true,theme:'auto',budget:25000,cats:BASE,
+expenses:[e(240,'Food',0,'Lunch'),e(60,'Travel',0,'Auto'),e(1299,'Shopping',1,'T-shirt'),e(850,'Bills',2,'Electricity'),e(180,'Food',2,'Dinner'),e(450,'Health',4,'Medicines'),e(399,'Entertainment',5,'Movie'),e(2100,'Food',7,'Groceries'),e(120,'Travel',8,'Bus pass')],
+income:[{id:uid(),amount:32000,src:'Salary',date:ago(10),note:''},{id:uid(),amount:500,src:'Cashback',date:ago(3),note:''}]}}
+let S=Store.load()||seed();const save=()=>Store.save(S);save();
+let page='home',F={month:today().slice(0,7),cat:'',from:'',to:''};
+const catOf=n=>S.cats.find(c=>c.n===n)||{n,i:'✨',c:SAGE[2]};
+// ---------- Theme ----------
+function applyTheme(){const t=S.theme==='auto'?(matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light'):S.theme;document.documentElement.dataset.t=t;document.querySelector('meta[name=theme-color]').content=t==='dark'?'#1A2112':'#728156'}
+// ---------- Navigation ----------
+const PAGES=[['home','Homepage','🏠'],['exp','Expense Day Track','🧮'],['inc','Income Track','💰'],['bud','Budget Management','🎯'],['udh','Money Pending (Udhaar)','🤝'],['set','Settings','⚙️']];
+function nav(p){document.body.classList.remove('open');if(p){page=p;scrollTo(0,0)}render()}
+function render(){$('#links').innerHTML=PAGES.map(([k,t,i])=>`<a class="${k===page?'on':''}" onclick="nav('${k}')">${i}&nbsp; ${t}</a>`).join('');
+$('#ttl').textContent=PAGES.find(p=>p[0]===page)[1];$('#fab').style.display=page==='exp'||page==='home'?'':'none';
+$('#app').innerHTML=({home:Home,exp:Expenses,set:Settings})[page]?.()||Soon();$('#app').style.animation='none';$('#app').offsetWidth;$('#app').style.animation=''}
+const Soon=()=>`<div class="card soon"><div style="font-size:48px">🌱</div><div class="mid">Coming next</div><p class="cap">This page is built in the next step. Homepage, Expense Day Track and Settings work now.</p></div>`;
+// ---------- Home ----------
+function Home(){const m=today().slice(0,7),now=new Date(),left=new Date(now.getFullYear(),now.getMonth()+1,0).getDate()-now.getDate()+1;
+const ex=S.expenses.filter(x=>x.date.startsWith(m)),spent=ex.reduce((a,x)=>a+x.amount,0);
+const total=S.income.reduce((a,x)=>a+x.amount,0)-S.expenses.reduce((a,x)=>a+x.amount,0);
+const by={};ex.forEach(x=>by[x.cat]=(by[x.cat]||0)+x.amount);
+const over=spent>S.budget,den=Math.max(S.budget,spent)||1;let st=0;
+const segs=Object.entries(by).map(([c,v])=>{const l=v/den*100,s=`<circle r="40" cx="50" cy="50" fill="none" stroke="${over?'#B5543C':catOf(c).c}" stroke-width="16" pathLength="100" stroke-dasharray="${Math.max(l-.6,0)} 100" stroke-dashoffset="${-st}"/>`;st+=l;return s}).join('');
+const recent=[...S.expenses].sort((a,b)=>b.date.localeCompare(a.date)).slice(0,5);
+return`<div class="card"><div class="cap">Total money</div><div class="big ${total<0?'red':'grn'}">${inr(total)}</div><div class="cap">Income minus expenses</div></div>
+<div class="grid" style="margin-bottom:14px"><div class="card"><div class="cap">Days left this month</div><div class="big">${left}</div></div><div class="card"><div class="cap">Spent this month</div><div class="big">${inr(spent)}</div></div></div>
+<div class="card"><div class="cap" style="text-align:center;margin-bottom:8px">Monthly budget ${inr(S.budget)}</div>
+<div class="donut"><svg viewBox="0 0 100 100"><circle r="40" cx="50" cy="50" fill="none" stroke="var(--track)" stroke-width="16"/>${segs}</svg>
+<div class="mid-t"><div class="mid ${over?'red':''}">${over?inr(spent-S.budget)+' over':inr(S.budget-spent)}</div><div class="cap">${over?'over budget':'remaining'}</div><div class="cap">${left} days left</div></div></div>
+<div class="leg">${Object.keys(by).map(c=>`<span><i style="background:${catOf(c).c}"></i>${esc(c)}</span>`).join('')||'<span class="cap">No spending yet this month</span>'}</div></div>
+<div class="card"><div class="mid" style="margin-top:0">Recent transactions</div>${recent.map(rowX).join('')||'<p class="cap">Tap + to add your first expense.</p>'}</div>`}
+const rowX=x=>{const c=catOf(x.cat);return`<div class="row"><div class="dot" style="background:${c.c}">${c.i}</div><div class="grow"><div>${esc(x.note||x.cat)}</div><div class="cap">${esc(x.cat)} • ${x.date.split('-').reverse().join('/')}</div></div><b class="red">-${inr(x.amount)}</b></div>`};
+// ---------- Expenses ----------
+function Expenses(){let l=S.expenses.filter(x=>(!F.cat||x.cat===F.cat)&&(F.from||F.to?(!F.from||x.date>=F.from)&&(!F.to||x.date<=F.to):x.date.startsWith(F.month)));
+l.sort((a,b)=>b.date.localeCompare(a.date));const tot=l.reduce((a,x)=>a+x.amount,0),days={};l.forEach(x=>(days[x.date]=days[x.date]||[]).push(x));
+return`<div class="card"><label>Month</label><input type="month" value="${F.month}" onchange="F.month=this.value;F.from=F.to='';render()">
+<div class="grid"><div><label>From</label><input type="date" value="${F.from}" onchange="F.from=this.value;render()"></div><div><label>To</label><input type="date" value="${F.to}" onchange="F.to=this.value;render()"></div></div>
+<div class="chips"><button class="chip ${F.cat?'':'on'}" onclick="F.cat='';render()">All</button>${S.cats.map(c=>`<button class="chip ${F.cat===c.n?'on':''}" onclick="F.cat='${esc(c.n)}';render()">${c.i} ${esc(c.n)}</button>`).join('')}</div>
+<div class="cap">Total in view</div><div class="big red">${inr(tot)}</div></div>
+${Object.keys(days).map(d=>{const dt=new Date(d+'T00:00');return`<div class="day"><span class="cap">${dt.toLocaleDateString('en-IN',{weekday:'short',day:'numeric',month:'short'})}</span><b>${inr(days[d].reduce((a,x)=>a+x.amount,0))}</b></div><div class="card" style="padding:6px 18px">${days[d].map(x=>{const c=catOf(x.cat);return`<div class="row"><div class="dot" style="background:${c.c}">${c.i}</div><div class="grow"><div>${esc(x.note||x.cat)}</div><div class="cap">${esc(x.cat)}</div></div><b>${inr(x.amount)}</b><button class="ib sm" style="width:40px;height:40px;font-size:16px" onclick="openForm('${x.id}')" aria-label="Edit">✎</button><button class="ib sm" style="width:40px;height:40px;font-size:16px" onclick="del('${x.id}')" aria-label="Delete">🗑</button></div>`}).join('')}</div>`}).join('')||'<div class="card soon"><div style="font-size:42px">🍃</div><p class="cap">No expenses here. Tap + to add one.</p></div>'}`}
+function openForm(id){const x=S.expenses.find(e=>e.id===id)||{amount:'',cat:S.cats[0].n,date:today(),note:''};
+$('#sbody').innerHTML=`<div class="mid" style="margin-top:0">${id?'Edit':'Add'} expense</div>
+<label>Amount (₹)</label><input id="fa" type="number" inputmode="decimal" min="0" value="${x.amount}" placeholder="0" autofocus>
+<label>Category</label><select id="fc" onchange="if(this.value==='__new'){const n=prompt('New category name');if(n&&n.trim()){S.cats.push({n:n.trim(),i:'🏷️',c:SAGE[S.cats.length%5]});save()}openForm(${id?`'${id}'`:''});}">${S.cats.map(c=>`<option ${c.n===x.cat?'selected':''}>${esc(c.n)}</option>`).join('')}<option value="__new">+ Add category…</option></select>
+<label>Date</label><input id="fd" type="date" value="${x.date}"><label>Note (optional)</label><input id="fn" value="${esc(x.note)}" placeholder="e.g. Lunch">
+<div style="display:flex;gap:10px"><button class="btn ghost" style="flex:1" onclick="closeSheet()">Cancel</button><button class="btn" style="flex:2" onclick="saveX('${id||''}')">Save</button></div>`;$('#sheet').classList.add('show')}
+const closeSheet=()=>$('#sheet').classList.remove('show');
+function saveX(id){const a=parseFloat($('#fa').value);if(!(a>0)){$('#fa').focus();return}
+const o={id:id||uid(),amount:a,cat:$('#fc').value,date:$('#fd').value||today(),note:$('#fn').value.trim()};
+if(id)S.expenses=S.expenses.map(e=>e.id===id?o:e);else S.expenses.push(o);save();closeSheet();render()}
+function del(id){if(confirm('Delete this expense?')){S.expenses=S.expenses.filter(e=>e.id!==id);save();render()}}
+// ---------- Settings ----------
+function Settings(){return`<div class="card"><label>Monthly budget (₹)</label><input type="number" inputmode="numeric" value="${S.budget}" onchange="S.budget=+this.value||0;save()">
+<label>Theme</label><select onchange="S.theme=this.value;save();applyTheme()">${['auto','light','dark'].map(t=>`<option ${S.theme===t?'selected':''}>${t}</option>`).join('')}</select></div>
+<div class="card"><div class="mid" style="margin-top:0">Your data</div><p class="cap">Everything stays on this phone. Nothing is sent anywhere.</p>
+<div style="display:grid;gap:10px"><button class="btn" onclick="exportJ()">Export backup (JSON)</button><button class="btn sec" onclick="exportC()">Export expenses (CSV)</button><button class="btn sec" onclick="$('#imp').click()">Import backup</button><input id="imp" type="file" accept=".json" hidden onchange="importJ(this.files[0])">
+${S.sample?`<button class="btn ghost" onclick="clearSample()">Clear sample data</button>`:''}<button class="btn dng" onclick="wipe()">Delete all data</button></div></div>`}
+function dl(name,txt,type){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([txt],{type}));a.download=name;a.click()}
+const exportJ=()=>dl(`hisab-kitab-${today()}.json`,JSON.stringify(S,null,1),'application/json');
+const exportC=()=>dl(`expenses-${today()}.csv`,'Date,Category,Amount,Note\n'+S.expenses.map(x=>[x.date,x.cat,x.amount,'"'+(x.note||'').replace(/"/g,'""')+'"'].join(',')).join('\n'),'text/csv');
+function importJ(f){if(!f)return;f.text().then(t=>{try{const d=JSON.parse(t);if(!Array.isArray(d.expenses))throw 0;if(confirm('Replace current data with this backup?')){S=Object.assign(seed(),d);save();applyTheme();render()}}catch(e){alert('This file is not a valid Hisab Kitab backup.')}})}
+function clearSample(){if(confirm('Remove all sample entries?')){S.expenses=[];S.income=[];S.sample=false;save();render()}}
+function wipe(){if(confirm('Delete ALL data permanently? This cannot be undone.')){Store.clear();S=Object.assign(seed(),{expenses:[],income:[],sample:false});save();render()}}
+// ---------- Boot ----------
+applyTheme();render();
+if('serviceWorker'in navigator)addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
+</script></body></html>
